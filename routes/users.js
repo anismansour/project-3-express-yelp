@@ -12,6 +12,15 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:id/restaurants/:restId", async (req, res) => {
+  const foundUser = await User.findById(req.params.id);
+  foundUser.restaurantId = foundUser.restaurantId.filter(r => {
+    return r.id != req.params.restId;
+  });
+  await foundUser.save();
+  res.json({ user: foundUser });
+});
+
 router.post("/", async (req, res) => {
   try {
     const user = await User.create(req.body);

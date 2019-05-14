@@ -53,15 +53,14 @@ router.put("/", (req, res) => {
 router.delete("/restaurants/:id", async (req, res) => {
   //return res.json({ data: "Received a DELETE HTTP method" });
   try {
-    const deleteRestaurant = await restaurantId.findByIdAndRemove(
-      req.params.id
-    );
-    const foundUser = await User.findOne({
-      restaurant: req.params.id
-    });
-    await foundUser.restaurants.remove(req.params.id);
-    await foundUser.save();
-    res.redirect("/users/:id");
+    const foundUser = await User.findById(req.params.id);
+    console.log(foundUser);
+    // const foundUser = await User.findOne({
+    //   restaurant: req.params.id
+    // });
+    // await foundUser.restaurants.remove(req.params.id);
+    // await foundUser.save();
+    // res.json({ user: foundUser });
   } catch (error) {
     res.send(error);
   }
