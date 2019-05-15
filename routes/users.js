@@ -39,16 +39,46 @@ router.delete("/", (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  console.log("hit");
   try {
     const foundUser = await User.findOne({ username: req.body.username });
     res.json({
       user: foundUser,
-      success: true
+      success: foundUser ? false : true
     });
   } catch (err) {
     res.json({ err });
   }
+});
+router.put("/:id/restaurants/:restId", async (req, res) => {
+  console.log(req.body.todo);
+  try {
+    const user = await User.findById(req.params.id);
+    console.log(user);
+    let rest = user.restaurantId[req.params.restId];
+    rest.note = req.body.todo;
+    user.markModified("restaurantId");
+    await user.save();
+    res.json({
+      data: user,
+      success: true,
+      message: "added a note!"
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/logout", (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      res.json({ err });
+    } else {
+      res.json({
+        success: true,
+        message: "logged out!"
+      });
+    }
+  });
 });
 
 module.exports = router;

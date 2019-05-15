@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const yelp = require("yelp-fusion");
+const session = require("express-session");
 const client = yelp.client(
   "syjJTTevF19unuFf-wseo_EJgQOu5pyBEf4qAwkgHxyhpPZuPi3B49uE-4V9LWac-SAcK7hatIbA-IRSBcjy5Op0JR-lVD2xx46xnzbbBgB3AZF2ebf0kH2AUJnUXHYx"
 );
@@ -25,6 +26,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  session({
+    secret: "string random",
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
 app.use("/api/v1", apiRouter);
 app.use("/users", usersRouter);
