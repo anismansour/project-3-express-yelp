@@ -6,9 +6,7 @@ const logger = require("morgan");
 const cors = require("cors");
 const yelp = require("yelp-fusion");
 const session = require("express-session");
-const client = yelp.client(
-  "syjJTTevF19unuFf-wseo_EJgQOu5pyBEf4qAwkgHxyhpPZuPi3B49uE-4V9LWac-SAcK7hatIbA-IRSBcjy5Op0JR-lVD2xx46xnzbbBgB3AZF2ebf0kH2AUJnUXHYx"
-);
+const client = yelp.client(process.env.MY_SECRET);
 require("dotenv").config();
 
 require("./db/db");
@@ -42,34 +40,5 @@ app.use("/users", usersRouter);
 app.use((req, res, next) => {
   next(createError(404));
 });
-
-// client
-//   .search({
-//     term: "Four Barrel Coffee",
-//     location: "san francisco, ca"
-//   })
-//   .then(response => {
-//     console.log(response.jsonBody.businesses[0].name);
-//     restaurantName = response.jsonBody.businesses[0].name;
-//     console.log(restaurantName, "this is the name");
-//   })
-//   .catch(e => {
-//     console.log(e);
-//   });
-
-// // res.json({
-// //   name: restaurant
-// // })
-
-// error handler
-// app.use((err, req, res, next) => {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
 
 module.exports = app;
